@@ -16,6 +16,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Variable to manage password visibility
+  bool _isPasswordVisible = false;
+
   Future<void> _login() async {
     final response = await http.post(
       Uri.parse('https://fakestoreapi.com/auth/login'),
@@ -133,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 30),
                           TextField(
                             controller: _passwordController,
-                            obscureText: true,
+                            obscureText: !_isPasswordVisible, // Update here
                             style: TextStyle(color: Colors.black),
                             decoration: InputDecoration(
                               fillColor: Colors.grey.shade100,
@@ -141,6 +144,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: "Password",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  // Choose the icon based on the password visibility
+                                  _isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                                onPressed: () {
+                                  // Toggle the password visibility
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
                               ),
                             ),
                           ),
